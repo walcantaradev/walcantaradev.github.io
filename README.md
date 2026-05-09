@@ -25,13 +25,17 @@
 
 ## 📂 Estructura del proyecto
 mi-portafolio/
-├── index.html
-├── css/
-│ └── style.css
-├── js/
-│ └── main.js
-└── assets/
-└── cv.pdf
+│
+├── index.html          # Archivo principal
+│
+├── css/                # Estilos CSS
+│   └── style.css       # Estilos principales (modo oscuro/claro)
+│
+├── js/                 # JavaScript
+│   └── main.js         # Lógica completa (chatbot, filtros, etc.)
+│
+└── assets/             # Recursos estáticos
+    └── cv.pdf          # Currículum para descargar
 
 
 ## 🚀 Cómo ejecutar localmente
