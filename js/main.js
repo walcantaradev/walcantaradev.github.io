@@ -231,12 +231,8 @@ function loadTestimonios() {
 
 // ===== GALERÍA =====
 const galeria = [
-    { titulo: "Weather App", icono: "🌤️", descripcion: "Aplicación del clima" },
-    { titulo: "Task Manager", icono: "✅", descripcion: "Gestor de tareas" },
-    { titulo: "E-commerce", icono: "🛒", descripcion: "Tienda online" },
-    { titulo: "Dashboard", icono: "📊", descripcion: "Panel administrativo" },
-    { titulo: "Red Social", icono: "💬", descripcion: "Social Media App" },
-    { titulo: "Portfolio", icono: "🎨", descripcion: "Sitio web creativo" }
+    { titulo: "Adivina el Número", icono: "🎯", descripcion: "Juego clásico de adivinanza" },
+    { titulo: "Uptime Monitor", icono: "📊", descripcion: "Panel de monitoreo" },
 ];
 
 function loadGaleria() {
