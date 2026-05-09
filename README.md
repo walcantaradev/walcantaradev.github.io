@@ -24,14 +24,16 @@
 - GitHub API
 
 ## 📂 Estructura del proyecto
+```
 mi-portafolio/
 ├── index.html
 ├── css/
-│ └── style.css
+│   └── style.css
 ├── js/
-│ └── main.js
+│   └── main.js
 └── assets/
-└── cv.pdf
+    └── cv.pdf
+```
 
 ## 🚀 Cómo ejecutar localmente
 1. Clona el repositorio
@@ -43,3 +45,8 @@ mi-portafolio/
 
 ## 📝 Licencia
 MIT - Libre para usar y modificar
+
+![GitHub Pages](https://img.shields.io/badge/GitHub-Pages-blue)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
