@@ -38,7 +38,6 @@ function initAllFeatures() {
     loadSkills();
     loadTestimonios();
     loadGaleria();
-    initChatbot();
     updateVisitCounter();
     initDownloadCV();
     initSocialShare();
@@ -53,9 +52,9 @@ function initParticles() {
             number: { value: 80, density: { enable: true, value_area: 800 } },
             color: { value: '#ffffff' },
             shape: { type: 'circle' },
-            opacity: { value: 0.5, random: false },
-            size: { value: 3, random: true },
-            line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+            opacity: { value: 0.3, random: false },
+            size: { value: 2, random: true },
+            line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.2, width: 1 },
             move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
         },
         interactivity: {
@@ -314,7 +313,7 @@ function cargarProyectos() {
                 <div style="font-size: 2rem; text-align: center;">${proyecto.imagen}</div>
                 <h3>${proyecto.titulo}</h3>
                 <p>${proyecto.descripcion}</p>
-                <div>${proyecto.tecnologias.slice(0, 3).map(t => `<span style="background: var(--link-hover); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-right: 5px;">${t}</span>`).join('')}</div>
+                <div>${proyecto.tecnologias.slice(0, 3).map(t => `<span style="background: var(--link-hover); color: #1a1a1a; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-right: 5px;">${t}</span>`).join('')}</div>
                 <button class="proyecto-link view-details" data-id="${proyecto.id}" style="margin-top: 1rem;">Ver Detalles</button>
             </div>
         </div>
@@ -429,66 +428,6 @@ function showFormMessage(msg, type) {
     setTimeout(() => { if (formMessage.innerHTML === msg) formMessage.innerHTML = ''; }, 5000);
 }
 
-// ===== CHATBOT =====
-function initChatbot() {
-    const chatbot = document.getElementById('chatbot');
-    const header = document.getElementById('chatbotHeader');
-    const toggleBtn = document.querySelector('.chatbot-toggle');
-    const input = document.getElementById('chatbotInput');
-    const sendBtn = document.getElementById('chatbotSend');
-    const messagesContainer = document.getElementById('chatbotMessages');
-    
-    if (!chatbot) return;
-    
-    toggleBtn?.addEventListener('click', () => {
-        chatbot.classList.toggle('minimized');
-        toggleBtn.textContent = chatbot.classList.contains('minimized') ? '+' : '−';
-    });
-    
-    function addMessage(text, isUser = false) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `chat-message ${isUser ? 'user' : 'bot'}`;
-        messageDiv.innerHTML = `<div class="message-content">${text}</div>`;
-        messagesContainer.appendChild(messageDiv);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-    
-    function processUserMessage(message) {
-        const lowerMsg = message.toLowerCase();
-        let response = "Lo siento, no entendí tu pregunta. ¿Puedes reformularla?";
-        
-        if (lowerMsg.includes('hola') || lowerMsg.includes('buenas')) {
-            response = "¡Hola! ¿En qué puedo ayudarte hoy?";
-        } else if (lowerMsg.includes('proyecto') || lowerMsg.includes('trabajo')) {
-            response = "Tengo varios proyectos interesantes. Puedes verlos en la sección 'Mis Proyectos'. ¿Te gustaría saber más sobre alguno en específico?";
-        } else if (lowerMsg.includes('habilidad') || lowerMsg.includes('tecnología')) {
-            response = "Manejo JavaScript, React, Node.js, Python, y más. Puedes ver todas mis habilidades en la sección correspondiente.";
-        } else if (lowerMsg.includes('contacto') || lowerMsg.includes('email')) {
-            response = "Puedes contactarme a través del formulario de contacto o directamente a mi email: tuemail@ejemplo.com";
-        } else if (lowerMsg.includes('precio') || lowerMsg.includes('costo')) {
-            response = "El costo de los proyectos varía según el alcance. Te recomiendo contactarme para una cotización personalizada.";
-        } else if (lowerMsg.includes('gracias')) {
-            response = "¡De nada! Estoy aquí para ayudarte. ¿Necesitas algo más?";
-        }
-        
-        setTimeout(() => addMessage(response), 500);
-    }
-    
-    function sendMessage() {
-        const message = input.value.trim();
-        if (!message) return;
-        
-        addMessage(message, true);
-        input.value = '';
-        processUserMessage(message);
-    }
-    
-    sendBtn?.addEventListener('click', sendMessage);
-    input?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendMessage();
-    });
-}
-
 // ===== NOTIFICACIONES =====
 function showWelcomeNotification() {
     if ('Notification' in window && Notification.permission === 'default') {
@@ -589,4 +528,4 @@ function initScrollAnimations() {
 }
 
 console.log('🚀 Portafolio Pro Ultra cargado correctamente');
-console.log('✨ Funciones: Skills | Testimonios | Galería | Chatbot | Notificaciones | Partículas | SEO');
+console.log('✨ Funciones: Skills | Testimonios | Galería | Notificaciones | Partículas | SEO');
