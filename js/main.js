@@ -341,7 +341,7 @@ function showProjectModal(proyecto) {
             <h3>💡 Solución</h3>
             <p>${proyecto.solucion}</p>
             <div class="modal-links">
-                <a href="${proyecto.url}" target="_blank" class="modal-btn demo">🚀 Ver Demo</a>
+                <a href="${proyecto.url}" class="modal-btn demo">🚀 Ver Demo</a>
                 <a href="${proyecto.github}" target="_blank" class="modal-btn github">📝 Ver Código</a>
             </div>
         </div>
