@@ -99,7 +99,7 @@
 </head>
 <body>
     <div class="game-container">
-        <a href="/index.html" class="back-link">← Volver al portafolio</a>
+        <a href="javascript:void(0)" class="back-link" onclick="goBackToPortfolio()">← Volver al portafolio</a>
         <h1>🎯 Adivina el Número</h1>
         <p>Adivina el número entre <strong>1 y 100</strong></p>
         
@@ -171,6 +171,15 @@
         document.getElementById('guessInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') checkGuess();
         });
+
+        function goBackToPortfolio() {
+    // Si hay historial, regresa
+    if (document.referrer && document.referrer.includes('walcantaradev.github.io')) {
+        window.location.href = document.referrer;
+    } else {
+        window.location.href = '../index.html';
+    }
+}
     </script>
 </body>
 </html>
