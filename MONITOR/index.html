@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uptime Monitor - Estado de Servicios</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <a href="../../index.html" class="back-link">← Volver al portafolio</a>
+                <button id="darkModeToggle" class="theme-toggle" aria-label="Cambiar tema">🌙</button>
+            </div>
+            <h1>📊 Monitor de Servicios</h1>
+            <p>Monitoreo en tiempo real del estado de tus páginas web</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-number" id="onlineCount">0</div>
+                <div class="stat-label">Servicios Online</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-number" id="avgResponse">0ms</div>
+                <div class="stat-label">Respuesta Promedio</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-number" id="uptimePercent">100%</div>
+                <div class="stat-label">Uptime Global</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔄</div>
+                <div class="stat-number" id="lastCheck">-</div>
+                <div class="stat-label">Última Revisión</div>
+            </div>
+        </div>
+
+        <div class="services-grid" id="servicesGrid"></div>
+
+        <div class="chart-container">
+            <h3>📈 Historial de Respuesta y Caídas (últimas 24h)</h3>
+            <canvas id="responseChart"></canvas>
+            <div class="status-legend">
+                <div class="legend-item">
+                    <div class="legend-color green"></div>
+                    <span>✅ Sin caídas</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color orange"></div>
+                    <span>⚠️ Caídas parciales</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color red"></div>
+                    <span>❌ Caída masiva (>50%)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color yellow"></div>
+                    <span>📊 Tiempo de respuesta</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="checkAllServices()" class="btn-check">🔄 Verificar Ahora</button>
+            <button onclick="addService()" class="btn-add">➕ Agregar Servicio</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
