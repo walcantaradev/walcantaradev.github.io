@@ -40,7 +40,7 @@ mi-portafolio/
 2. Abre `index.html` en tu navegador
 
 ## 📞 Contacto
-- Email: tuemail@ejemplo.com
+- Email: waldir.alcantara11@gmail.com
 - GitHub: [@walcantaradev](https://github.com/walcantaradev)
 
 ## 📝 Licencia
