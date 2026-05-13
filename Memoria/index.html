@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🧠 Juego de Memoria | Encuentra las parejas</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Botón volver al portafolio -->
+        <div class="back-home">
+            <a href="../../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Volver al portafolio
+            </a>
+        </div>
+
+        <!-- Header del juego -->
+        <header class="game-header">
+            <h1>🧠 Juego de Memoria</h1>
+            <p>Encuentra las parejas de emojis. ¡Pon a prueba tu memoria!</p>
+        </header>
+
+        <!-- Panel de estadísticas -->
+        <div class="stats-panel">
+            <div class="stat-card">
+                <i class="fas fa-hourglass-half"></i>
+                <div class="stat-value" id="timerDisplay">00:00</div>
+                <div class="stat-label">Tiempo</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-hand-peace"></i>
+                <div class="stat-value" id="movesDisplay">0</div>
+                <div class="stat-label">Movimientos</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-trophy"></i>
+                <div class="stat-value" id="pairsFound">0</div>
+                <div class="stat-label">Parejas</div>
+            </div>
+        </div>
+
+        <!-- Tablero de juego -->
+        <div class="board" id="gameBoard"></div>
+
+        <!-- Botones de control -->
+        <div class="game-controls">
+            <button id="resetGameBtn" class="control-btn reset">
+                <i class="fas fa-sync-alt"></i> Reiniciar
+            </button>
+            <button id="newGameBtn" class="control-btn new">
+                <i class="fas fa-play"></i> Nueva partida
+            </button>
+        </div>
+
+        <!-- Mensaje de victoria (modal simple) -->
+        <div id="victoryModal" class="victory-modal">
+            <div class="victory-content">
+                <i class="fas fa-crown"></i>
+                <h2>🎉 ¡Ganaste! 🎉</h2>
+                <p>Completaste el juego en <strong id="finalMoves">0</strong> movimientos</p>
+                <p>Tiempo: <strong id="finalTime">00:00</strong></p>
+                <button id="playAgainBtn" class="victory-btn">Jugar de nuevo</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
