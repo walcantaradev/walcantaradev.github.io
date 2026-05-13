@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>💜 FanHub - GTA V · Minecraft · Zully · Pandas</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Botón volver al portafolio -->
+        <div class="back-home">
+            <a href="../../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Volver al portafolio
+            </a>
+        </div>
+
+        <!-- Encabezado principal -->
+        <header class="hero">
+            <div class="hero-icon">💜🎮🐼</div>
+            <h1>✨ Zona Gamer ✨</h1>
+            <p class="sub">Para la chica que conquista Los Santos, construye mundos y ama los pandas 🐼</p>
+        </header>
+
+        <!-- ===== SECCIÓN DE STREAMER FAVORITA (ZULLY) ===== -->
+        <section class="stream-section">
+            <h2><i class="fab fa-kickstarter"></i> Su streamer favorita</h2>
+            <div class="stream-grid">
+                <div class="stream-card">
+                    <div class="stream-avatar">👑</div>
+                    <h3>Zully (zullyy_cs)</h3>
+                    <p>Le encanta ver sus directos en Kick. ¡Una fan de corazón! 💜</p>
+                    <a href="https://kick.com/zullyy_cs" target="_blank" class="kick-btn">
+                        <i class="fab fa-kickstarter"></i> Ver en Kick
+                    </a>
+                </div>
+                <div class="stream-card">
+                    <div class="stream-avatar">💜</div>
+                    <h3>Mientras mira a Zully...</h3>
+                    <p>A ella le gusta jugar <strong>GTA V (FiveM)</strong> y <strong>Minecraft</strong>. ¡Quizá te vea a ti en sus streams!</p>
+                    <div class="game-badges">
+                        <span class="badge">🚔 FiveM · Roleplay</span>
+                        <span class="badge">⛏️ Minecraft · Survival</span>
+                    </div>
+                </div>
+            </div>
+            <div class="zully-message" id="zullyMessage">
+                <i class="fas fa-heart"></i> <span id="rotatingMessage">💜 Zully está en directo... ¡y tú puedes estar jugando GTA V!</span>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN DE TIPS Y COMANDOS ===== -->
+        <section class="tips-section">
+            <h2><i class="fas fa-gamepad"></i> Tips & Comandos útiles</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">🚔</div>
+                    <h3>FiveM · Roleplay</h3>
+                    <ul>
+                        <li><strong>/me</strong> - Acción en primera persona (ej: /me mira por la ventana)</li>
+                        <li><strong>/do</strong> - Descripción ambiental (ej: /do se escucha música)</li>
+                        <li><strong>/stash</strong> - Guardar objetos en tu vehículo/casa</li>
+                        <li><strong>/give [ID] [item]</strong> - Dar objetos a otro jugador</li>
+                        <li><strong>/911</strong> - Llamar a la policía (texto)</li>
+                        <li><strong>/anon</strong> - Hablar en modo anónimo</li>
+                    </ul>
+                    <p class="tip-note">💡 Tip: Usa /me para sumergirte en el roleplay y hacerlo más divertido</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">⛏️</div>
+                    <h3>Minecraft · Trucos y comandos</h3>
+                    <ul>
+                        <li><strong>F3 + H</strong> - Ver durabilidad de herramientas/armaduras</li>
+                        <li><strong>Ctrl + Q</strong> - Lanzar el stack completo de items</li>
+                        <li><strong>F3 + T</strong> - Recargar texturas y recursos</li>
+                        <li><strong>/seed</strong> - Ver la semilla del mundo</li>
+                        <li><strong>/locate biome</strong> - Encontrar biomas específicos</li>
+                        <li><strong>/gamerule keepInventory true</strong> - No perder items al morir</li>
+                    </ul>
+                    <p class="tip-note">💡 Tip: Explora biomas raros con /locate biome</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN DE PANDAS (AMOR POR PANDAS) ===== -->
+        <section class="panda-section">
+            <h2><i class="fas fa-panda"></i> Rinconcito Panda 🐼</h2>
+            <p class="panda-sub">Porque los pandas son adorables, igual que ella</p>
+            <div class="panda-grid" id="pandaGrid"></div>
+        </section>
+
+        <!-- ===== SECCIÓN DE FRASES MOTIVADORAS ===== -->
+        <section class="message-section">
+            <div class="message-card">
+                <i class="fas fa-heart"></i>
+                <p id="dailyMessage">Cargando frase especial...</p>
+                <button id="newMessageBtn" class="refresh-btn">
+                    <i class="fas fa-sync-alt"></i> Nueva frase
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
