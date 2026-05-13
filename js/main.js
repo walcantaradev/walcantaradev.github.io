@@ -233,7 +233,7 @@ function loadTestimonios() {
 const galeria = [
     { titulo: "Adivina el Número", icono: "🎯", descripcion: "Juego clásico de adivinanza" },
     { titulo: "Uptime Monitor", icono: "📊", descripcion: "Panel de monitoreo" },
-    { titulo: "Love Map", icono: "🗺️💖", descripcion: "Mapa interactivo Lima ↔ Milán con playlist colaborativa" }
+    { titulo: "Love Map", icono: "🗺️💖", descripcion: "Mapa interactivo Lima ↔ Milán con playlist colaborativa" },
     { titulo: "FanHub", icono: "🎮🐼", descripcion: "Zona gamer con Zully, FiveM, Minecraft y pandas" }
 ];
 
