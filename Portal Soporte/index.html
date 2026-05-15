@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>📋 Portal de Soporte | Respuestas y Manuales</title>
+    <title>📋 Portal de Soporte | Respuestas y Manuales Compartidos</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -22,7 +22,7 @@
         <header class="header">
             <div class="header-icon">📋</div>
             <h1>Portal de Soporte</h1>
-            <p>Respuestas rápidas y manuales para casos frecuentes</p>
+            <p>Respuestas rápidas y manuales compartidos con todo el equipo</p>
             <div class="shortcuts-info">
                 <span><i class="fas fa-mouse-pointer"></i> Ctrl+B: Buscar</span>
                 <span><i class="fas fa-plus-circle"></i> Ctrl+N: Nueva respuesta</span>
@@ -33,10 +33,10 @@
         <!-- Pestañas -->
         <div class="tabs">
             <button class="tab-btn active" data-tab="respuestas">
-                <i class="fas fa-reply-all"></i> Respuestas Rápidas
+                <i class="fas fa-reply-all"></i> Respuestas
             </button>
             <button class="tab-btn" data-tab="manuales">
-                <i class="fas fa-book"></i> Manuales PDF
+                <i class="fas fa-book"></i> Manuales
             </button>
             <button class="tab-btn" data-tab="nueva">
                 <i class="fas fa-plus-circle"></i> Agregar
@@ -46,12 +46,12 @@
             </button>
         </div>
 
-        <!-- ===== TABLA DE RESPUESTAS RÁPIDAS ===== -->
+        <!-- ===== TABLA DE RESPUESTAS ===== -->
         <div id="tabRespuestas" class="tab-content active">
             <div class="toolbar">
                 <div class="search-bar">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="searchRespuestas" placeholder="Buscar por título, categoría o contenido... (Ctrl+B)">
+                    <input type="text" id="searchRespuestas" placeholder="Buscar respuestas... (Ctrl+B)">
                 </div>
                 <div class="sort-buttons">
                     <button id="sortFechaBtn" class="sort-btn active">
@@ -67,12 +67,10 @@
                 <i class="fas fa-database"></i> <span id="respuestasCount">0</span> respuestas guardadas
             </div>
             
-            <div id="respuestasList" class="respuestas-grid">
-                <!-- Las respuestas se cargarán dinámicamente -->
-            </div>
+            <div id="respuestasList" class="respuestas-grid"></div>
         </div>
 
-        <!-- ===== TABLA DE MANUALES PDF ===== -->
+        <!-- ===== TABLA DE MANUALES ===== -->
         <div id="tabManuales" class="tab-content">
             <div class="search-bar">
                 <i class="fas fa-search"></i>
@@ -83,29 +81,28 @@
                 <i class="fas fa-file-pdf"></i> <span id="manualesCount">0</span> manuales disponibles
             </div>
             
-            <div id="manualesList" class="manuales-grid">
-                <!-- Los manuales se cargarán dinámicamente -->
-            </div>
+            <div id="manualesList" class="manuales-grid"></div>
         </div>
 
-        <!-- ===== TABLA PARA AGREGAR NUEVO CONTENIDO ===== -->
+        <!-- ===== TABLA PARA AGREGAR ===== -->
         <div id="tabNueva" class="tab-content">
+            <!-- Agregar respuesta -->
             <div class="form-card">
                 <h3><i class="fas fa-plus-circle"></i> Agregar nueva respuesta</h3>
                 
                 <div class="form-group">
-                    <label>Título de la respuesta</label>
+                    <label>Título</label>
                     <input type="text" id="newTitulo" placeholder="Ej: Licencia Office 365">
                 </div>
                 
                 <div class="form-group">
                     <label>Categoría</label>
                     <select id="newCategoria">
-                        <option value="">Seleccionar categoría...</option>
+                        <option value="">Seleccionar...</option>
                         <option value="Licencias">Licencias</option>
-                        <option value="Correo Electrónico">Correo Electrónico</option>
+                        <option value="Correo">Correo</option>
                         <option value="Acceso">Acceso</option>
-                        <option value="Office 365">Office 365</option>
+                        <option value="Office">Office 365</option>
                         <option value="Teams">Teams</option>
                         <option value="OneDrive">OneDrive</option>
                         <option value="Cuentas">Cuentas</option>
@@ -114,8 +111,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Contenido de la respuesta</label>
-                    <textarea id="newContenido" rows="8" placeholder="Escribe aquí la respuesta completa..."></textarea>
+                    <label>Contenido</label>
+                    <textarea id="newContenido" rows="8" placeholder="Escribe la respuesta..."></textarea>
                 </div>
                 
                 <button id="guardarRespuestaBtn" class="btn-primary">
@@ -123,8 +120,9 @@
                 </button>
             </div>
 
+            <!-- Agregar manual (con enlace de Drive) -->
             <div class="form-card">
-                <h3><i class="fas fa-file-pdf"></i> Agregar manual PDF</h3>
+                <h3><i class="fab fa-google-drive"></i> Agregar manual (compartido)</h3>
                 
                 <div class="form-group">
                     <label>Nombre del manual</label>
@@ -132,18 +130,18 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Descripción (opcional)</label>
-                    <input type="text" id="newManualDesc" placeholder="Breve descripción del contenido">
+                    <label>Descripción</label>
+                    <input type="text" id="newManualDesc" placeholder="Breve descripción">
                 </div>
                 
                 <div class="form-group">
-                    <label>Seleccionar archivo PDF</label>
-                    <input type="file" id="newManualFile" accept=".pdf">
-                    <small>Los PDFs se guardan en tu navegador (localStorage)</small>
+                    <label>Enlace de Google Drive</label>
+                    <input type="url" id="newManualUrl" placeholder="https://drive.google.com/file/d/.../view">
+                    <small>📌 Pasos: Sube el PDF a Drive → Comparte con "Cualquiera con el enlace" → Copia el enlace</small>
                 </div>
                 
                 <button id="guardarManualBtn" class="btn-primary">
-                    <i class="fas fa-upload"></i> Subir manual
+                    <i class="fab fa-google-drive"></i> Agregar manual
                 </button>
             </div>
         </div>
@@ -152,9 +150,8 @@
         <div id="tabRespaldo" class="tab-content">
             <div class="form-card">
                 <h3><i class="fas fa-database"></i> Respaldos de datos</h3>
-                <p style="color: #94a3b8; margin-bottom: 1.5rem; font-size: 0.85rem;">
-                    Exporta todos tus datos (respuestas y manuales) para guardarlos o compartirlos con compañeros.
-                </p>
+                <p>Todos los datos (respuestas y manuales) están en la nube compartida.</p>
+                <p>Puedes exportar un respaldo local o importar datos desde un archivo.</p>
                 
                 <div class="backup-buttons">
                     <button id="exportarBtn" class="btn-primary">
@@ -167,13 +164,13 @@
                 </div>
                 
                 <div class="backup-info">
-                    <small><i class="fas fa-info-circle"></i> Los respaldos incluyen todas tus respuestas y manuales PDF.</small>
+                    <small><i class="fas fa-info-circle"></i> Los respaldos incluyen todas las respuestas y los enlaces de manuales.</small>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal para ver respuesta completa -->
+    <!-- Modal para ver respuesta -->
     <div id="respuestaModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -200,31 +197,22 @@
                 <span class="close-editar-modal">&times;</span>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Título</label>
-                    <input type="text" id="editTitulo" class="edit-input">
-                </div>
-                <div class="form-group">
-                    <label>Categoría</label>
-                    <select id="editCategoria" class="edit-select">
-                        <option value="">Sin categoría</option>
-                        <option value="Licencias">Licencias</option>
-                        <option value="Correo Electrónico">Correo Electrónico</option>
-                        <option value="Acceso">Acceso</option>
-                        <option value="Office 365">Office 365</option>
-                        <option value="Teams">Teams</option>
-                        <option value="OneDrive">OneDrive</option>
-                        <option value="Cuentas">Cuentas</option>
-                        <option value="Otros">Otros</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Contenido</label>
-                    <textarea id="editContenido" rows="10" class="edit-textarea"></textarea>
-                </div>
+                <input type="text" id="editTitulo" class="edit-input" placeholder="Título">
+                <select id="editCategoria" class="edit-select">
+                    <option value="">Sin categoría</option>
+                    <option value="Licencias">Licencias</option>
+                    <option value="Correo">Correo</option>
+                    <option value="Acceso">Acceso</option>
+                    <option value="Office">Office 365</option>
+                    <option value="Teams">Teams</option>
+                    <option value="OneDrive">OneDrive</option>
+                    <option value="Cuentas">Cuentas</option>
+                    <option value="Otros">Otros</option>
+                </select>
+                <textarea id="editContenido" rows="10" class="edit-textarea"></textarea>
             </div>
             <div class="modal-footer">
-                <button id="guardarEdicionBtn" class="btn-primary">Guardar cambios</button>
+                <button id="guardarEdicionBtn" class="btn-primary">Guardar</button>
                 <button id="cancelarEdicionBtn" class="btn-secondary">Cancelar</button>
             </div>
         </div>
@@ -243,7 +231,7 @@
         </div>
     </div>
 
-    <!-- Toast para notificaciones -->
+    <!-- Toast -->
     <div id="toast" class="toast"></div>
 
     <script src="script.js"></script>
