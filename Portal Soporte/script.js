@@ -1,5 +1,5 @@
 // ===== CONFIGURACIÓN - CAMBIA ESTA URL =====
-const API_URL = "https://script.google.com/macros/s/AKfycbxkTW-KNC7IxNzzXsgok2mfPws5hGskarc7RfHMDbIEkH_XwnxSskVcIhcvuUkc-EW5/exec"; // ← PON TU URL DE APPS SCRIPT
+const API_URL = "https://script.google.com/macros/library/d/1HXL9zjFyAhmaErPTaMpNnTcz0Cl3a5ljfY3rZtrcrpprDwlN8GxhlTga/1"; // ← PON TU URL DE APPS SCRIPT
 
 let respuestas = [];
 let manuales = [];
