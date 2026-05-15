@@ -3,8 +3,11 @@
 const SUPABASE_URL = "https://udroovphwlzppbesjopu.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkcm9vdnBod2x6cHBiZXNqb3B1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NTUyNTQsImV4cCI6MjA5NDQzMTI1NH0.UFy17btjMGBQsIHxbyJuTB4eOYBGYHh3gWn5A3DKekg";
 
-// Inicializar Supabase
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Inicializar Supabase (evitando duplicados)
+if (typeof window._supabaseClient === 'undefined') {
+    window._supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+const supabase = window._supabaseClient;
 
 let respuestas = [];
 let manuales = [];
@@ -12,6 +15,18 @@ let ordenActual = 'fecha';
 let respuestaEnEdicion = null;
 let filtroRespuestas = '';
 let filtroManuales = '';
+
+// ===== TOAST =====
+function mostrarToast(mensaje, tipo = 'success') {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = mensaje;
+    toast.style.background = tipo === 'success' ? '#10b981' : '#ef4444';
+    toast.style.display = 'block';
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 3000);
+}
 
 // ===== FUNCIONES DE BASE DE DATOS =====
 async function cargarRespuestas() {
@@ -22,7 +37,6 @@ async function cargarRespuestas() {
             .order('fecha', { ascending: false });
         
         if (error) throw error;
-        
         respuestas = data || [];
         renderizarRespuestas();
         console.log(`✅ ${respuestas.length} respuestas cargadas`);
@@ -70,13 +84,11 @@ async function cargarManuales() {
             .order('fecha', { ascending: false });
         
         if (error) throw error;
-        
         manuales = data || [];
         renderizarManuales();
         console.log(`✅ ${manuales.length} manuales cargados`);
     } catch (error) {
         console.error('Error cargando manuales:', error);
-        mostrarToast('Error al cargar manuales', 'error');
     }
 }
 
@@ -108,17 +120,6 @@ async function eliminarManualAPI(id) {
         console.error('Error eliminando manual:', error);
         return false;
     }
-}
-
-// ===== TOAST =====
-function mostrarToast(mensaje, tipo = 'success') {
-    const toast = document.getElementById('toast');
-    toast.textContent = mensaje;
-    toast.style.background = tipo === 'success' ? '#10b981' : '#ef4444';
-    toast.style.display = 'block';
-    setTimeout(() => {
-        toast.style.display = 'none';
-    }, 3000);
 }
 
 // ===== RENDERIZAR RESPUESTAS =====
@@ -168,15 +169,13 @@ function renderizarRespuestas() {
     `).join('');
 }
 
-async function abrirRespuesta(id) {
+window.abrirRespuesta = async function(id) {
     const respuesta = respuestas.find(r => r.id === id);
     if (!respuesta) return;
     
-    // Incrementar contador de usos
     respuesta.usos = (respuesta.usos || 0) + 1;
     await guardarRespuesta(respuesta);
     
-    // Actualizar localmente sin recargar
     const index = respuestas.findIndex(r => r.id === id);
     if (index !== -1) respuestas[index] = respuesta;
     renderizarRespuestas();
@@ -194,9 +193,9 @@ async function abrirRespuesta(id) {
         document.getElementById('respuestaModal').style.display = 'none';
         abrirEdicion(id);
     };
-}
+};
 
-async function eliminarRespuesta(id) {
+window.eliminarRespuesta = async function(id) {
     if (confirm('¿Eliminar esta respuesta?')) {
         const exito = await eliminarRespuestaAPI(id);
         if (exito) {
@@ -205,7 +204,7 @@ async function eliminarRespuesta(id) {
             mostrarToast('Respuesta eliminada');
         }
     }
-}
+};
 
 function abrirEdicion(id) {
     const respuesta = respuestas.find(r => r.id === id);
@@ -284,13 +283,13 @@ function renderizarManuales() {
     `).join('');
 }
 
-function verPDF(url, titulo) {
+window.verPDF = function(url, titulo) {
     document.getElementById('pdfModalTitulo').textContent = titulo;
     document.getElementById('pdfIframe').src = url;
     document.getElementById('pdfModal').style.display = 'flex';
-}
+};
 
-async function eliminarManual(id) {
+window.eliminarManual = async function(id) {
     if (confirm('¿Eliminar este manual?')) {
         const exito = await eliminarManualAPI(id);
         if (exito) {
@@ -299,7 +298,7 @@ async function eliminarManual(id) {
             mostrarToast('Manual eliminado');
         }
     }
-}
+};
 
 // ===== AGREGAR NUEVO CONTENIDO =====
 async function agregarRespuesta() {
@@ -372,66 +371,103 @@ async function agregarManual() {
 
 // ===== PESTAÑAS =====
 function initTabs() {
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tab = btn.dataset.tab;
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetTab = tab.dataset.tab;
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById(`tab${targetTab.charAt(0).toUpperCase() + targetTab.slice(1)}`).classList.add('active');
         });
     });
 }
 
 // ===== BUSCADORES =====
 function initBuscadores() {
-    document.getElementById('searchRespuestas').addEventListener('input', (e) => {
-        filtroRespuestas = e.target.value;
-        renderizarRespuestas();
-    });
-    document.getElementById('searchManuales').addEventListener('input', (e) => {
-        filtroManuales = e.target.value;
-        renderizarManuales();
-    });
+    const searchRespuestas = document.getElementById('searchRespuestas');
+    const searchManuales = document.getElementById('searchManuales');
+    
+    if (searchRespuestas) {
+        searchRespuestas.addEventListener('input', (e) => {
+            filtroRespuestas = e.target.value;
+            renderizarRespuestas();
+        });
+    }
+    
+    if (searchManuales) {
+        searchManuales.addEventListener('input', (e) => {
+            filtroManuales = e.target.value;
+            renderizarManuales();
+        });
+    }
 }
 
 // ===== ORDENAMIENTO =====
 function initSorting() {
-    document.getElementById('sortFechaBtn').addEventListener('click', () => {
-        ordenActual = 'fecha';
-        document.getElementById('sortFechaBtn').classList.add('active');
-        document.getElementById('sortUsoBtn').classList.remove('active');
-        renderizarRespuestas();
-    });
-    document.getElementById('sortUsoBtn').addEventListener('click', () => {
-        ordenActual = 'uso';
-        document.getElementById('sortUsoBtn').classList.add('active');
-        document.getElementById('sortFechaBtn').classList.remove('active');
-        renderizarRespuestas();
-    });
+    const sortFecha = document.getElementById('sortFechaBtn');
+    const sortUso = document.getElementById('sortUsoBtn');
+    
+    if (sortFecha) {
+        sortFecha.addEventListener('click', () => {
+            ordenActual = 'fecha';
+            sortFecha.classList.add('active');
+            sortUso.classList.remove('active');
+            renderizarRespuestas();
+        });
+    }
+    
+    if (sortUso) {
+        sortUso.addEventListener('click', () => {
+            ordenActual = 'uso';
+            sortUso.classList.add('active');
+            sortFecha.classList.remove('active');
+            renderizarRespuestas();
+        });
+    }
 }
 
 // ===== MODALES =====
 function initModales() {
-    document.querySelector('.close-modal').onclick = () => {
-        document.getElementById('respuestaModal').style.display = 'none';
-    };
-    document.querySelector('.close-editar-modal').onclick = () => {
-        document.getElementById('editarModal').style.display = 'none';
-    };
-    document.querySelector('.close-pdf-modal').onclick = () => {
-        document.getElementById('pdfModal').style.display = 'none';
-        document.getElementById('pdfIframe').src = '';
-    };
+    const closeModal = document.querySelector('.close-modal');
+    const closeEditar = document.querySelector('.close-editar-modal');
+    const closePdf = document.querySelector('.close-pdf-modal');
+    const guardarEdicionBtn = document.getElementById('guardarEdicionBtn');
+    const cancelarEdicionBtn = document.getElementById('cancelarEdicionBtn');
+    
+    if (closeModal) {
+        closeModal.onclick = () => {
+            document.getElementById('respuestaModal').style.display = 'none';
+        };
+    }
+    
+    if (closeEditar) {
+        closeEditar.onclick = () => {
+            document.getElementById('editarModal').style.display = 'none';
+        };
+    }
+    
+    if (closePdf) {
+        closePdf.onclick = () => {
+            document.getElementById('pdfModal').style.display = 'none';
+            document.getElementById('pdfIframe').src = '';
+        };
+    }
+    
     window.onclick = (e) => {
-        if (e.target.classList.contains('modal')) {
+        if (e.target.classList && e.target.classList.contains('modal')) {
             document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
         }
     };
-    document.getElementById('guardarEdicionBtn').onclick = guardarEdicion;
-    document.getElementById('cancelarEdicionBtn').onclick = () => {
-        document.getElementById('editarModal').style.display = 'none';
-    };
+    
+    if (guardarEdicionBtn) guardarEdicionBtn.onclick = guardarEdicion;
+    if (cancelarEdicionBtn) {
+        cancelarEdicionBtn.onclick = () => {
+            document.getElementById('editarModal').style.display = 'none';
+        };
+    }
 }
 
 // ===== TECLADO =====
@@ -439,14 +475,21 @@ function initTeclado() {
     document.addEventListener('keydown', (e) => {
         if (e.ctrlKey && e.key === 'b') {
             e.preventDefault();
-            document.getElementById('searchRespuestas').focus();
-            mostrarToast('🔍 Buscador activado');
+            const searchInput = document.getElementById('searchRespuestas');
+            if (searchInput) {
+                searchInput.focus();
+                mostrarToast('🔍 Buscador activado');
+            }
         }
         if (e.ctrlKey && e.key === 'n') {
             e.preventDefault();
-            document.querySelector('.tab-btn[data-tab="nueva"]').click();
-            document.getElementById('newTitulo').focus();
-            mostrarToast('📝 Creando nueva respuesta');
+            const nuevaTab = document.querySelector('.tab-btn[data-tab="nueva"]');
+            if (nuevaTab) {
+                nuevaTab.click();
+                const tituloInput = document.getElementById('newTitulo');
+                if (tituloInput) tituloInput.focus();
+                mostrarToast('📝 Creando nueva respuesta');
+            }
         }
     });
 }
@@ -472,8 +515,16 @@ async function init() {
     initModales();
     initTeclado();
     
-    document.getElementById('guardarRespuestaBtn').onclick = agregarRespuesta;
-    document.getElementById('guardarManualBtn').onclick = agregarManual;
+    const guardarRespuestaBtn = document.getElementById('guardarRespuestaBtn');
+    const guardarManualBtn = document.getElementById('guardarManualBtn');
+    
+    if (guardarRespuestaBtn) guardarRespuestaBtn.onclick = agregarRespuesta;
+    if (guardarManualBtn) guardarManualBtn.onclick = agregarManual;
 }
 
-document.addEventListener('DOMContentLoaded', init);
+// Iniciar cuando el DOM esté listo
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
