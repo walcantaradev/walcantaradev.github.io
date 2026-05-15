@@ -1,13 +1,10 @@
 // ===== CONFIGURACIÓN DE SUPABASE =====
-// ⚠️ CAMBIA ESTOS VALORES POR LOS TUYOS ⚠️
+// ⚠️ CAMBIA ESTOS DOS VALORES POR LOS TUYOS ⚠️
 const SUPABASE_URL = "https://udroovphwlzppbesjopu.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkcm9vdnBod2x6cHBiZXNqb3B1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NTUyNTQsImV4cCI6MjA5NDQzMTI1NH0.UFy17btjMGBQsIHxbyJuTB4eOYBGYHh3gWn5A3DKekg";
 
-// Inicializar Supabase (evitando duplicados)
-if (typeof window._supabaseClient === 'undefined') {
-    window._supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-}
-const supabase = window._supabaseClient;
+// Inicializar Supabase - usando variable única para evitar conflictos
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let respuestas = [];
 let manuales = [];
@@ -31,7 +28,7 @@ function mostrarToast(mensaje, tipo = 'success') {
 // ===== FUNCIONES DE BASE DE DATOS =====
 async function cargarRespuestas() {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await sb
             .from('respuestas')
             .select('*')
             .order('fecha', { ascending: false });
@@ -48,7 +45,7 @@ async function cargarRespuestas() {
 
 async function guardarRespuesta(respuesta) {
     try {
-        const { error } = await supabase
+        const { error } = await sb
             .from('respuestas')
             .upsert(respuesta, { onConflict: 'id' });
         
@@ -63,7 +60,7 @@ async function guardarRespuesta(respuesta) {
 
 async function eliminarRespuestaAPI(id) {
     try {
-        const { error } = await supabase
+        const { error } = await sb
             .from('respuestas')
             .delete()
             .eq('id', id);
@@ -78,7 +75,7 @@ async function eliminarRespuestaAPI(id) {
 
 async function cargarManuales() {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await sb
             .from('manuales')
             .select('*')
             .order('fecha', { ascending: false });
@@ -94,7 +91,7 @@ async function cargarManuales() {
 
 async function guardarManual(manual) {
     try {
-        const { error } = await supabase
+        const { error } = await sb
             .from('manuales')
             .upsert(manual, { onConflict: 'id' });
         
@@ -109,7 +106,7 @@ async function guardarManual(manual) {
 
 async function eliminarManualAPI(id) {
     try {
-        const { error } = await supabase
+        const { error } = await sb
             .from('manuales')
             .delete()
             .eq('id', id);
