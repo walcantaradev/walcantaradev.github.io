@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>📋 Portal de Soporte | Respuestas y Manuales</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Botón volver al portafolio -->
+        <div class="back-home">
+            <a href="../../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Volver al portafolio
+            </a>
+        </div>
+
+        <header class="header">
+            <div class="header-icon">📋</div>
+            <h1>Portal de Soporte</h1>
+            <p>Respuestas rápidas y manuales compartidos con todo el equipo</p>
+            <div class="shortcuts-info">
+                <span><i class="fas fa-mouse-pointer"></i> Ctrl+B: Buscar</span>
+                <span><i class="fas fa-plus-circle"></i> Ctrl+N: Nueva respuesta</span>
+                <span><i class="fas fa-copy"></i> Ctrl+K: Copiar seleccionada</span>
+            </div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="respuestas">
+                <i class="fas fa-reply-all"></i> Respuestas
+            </button>
+            <button class="tab-btn" data-tab="manuales">
+                <i class="fas fa-book"></i> Manuales
+            </button>
+            <button class="tab-btn" data-tab="categorias">
+                <i class="fas fa-tags"></i> Categorías
+            </button>
+            <button class="tab-btn" data-tab="nueva">
+                <i class="fas fa-plus-circle"></i> Agregar
+            </button>
+        </div>
+
+        <!-- ===== TABLA DE RESPUESTAS ===== -->
+        <div id="tabRespuestas" class="tab-content active">
+            <div class="toolbar">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchRespuestas" placeholder="Buscar respuestas... (Ctrl+B)">
+                </div>
+                <div class="sort-buttons">
+                    <button id="sortFechaBtn" class="sort-btn active">
+                        <i class="fas fa-calendar"></i> Más reciente
+                    </button>
+                    <button id="sortUsoBtn" class="sort-btn">
+                        <i class="fas fa-chart-line"></i> Más usadas
+                    </button>
+                </div>
+            </div>
+            
+            <div class="stats-badge">
+                <i class="fas fa-database"></i> <span id="respuestasCount">0</span> respuestas guardadas
+            </div>
+            
+            <div id="respuestasList" class="respuestas-grid"></div>
+        </div>
+
+        <!-- ===== TABLA DE MANUALES ===== -->
+        <div id="tabManuales" class="tab-content">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchManuales" placeholder="Buscar manual...">
+            </div>
+            
+            <div class="stats-badge">
+                <i class="fas fa-file"></i> <span id="manualesCount">0</span> manuales disponibles
+            </div>
+            
+            <div id="manualesList" class="manuales-grid"></div>
+        </div>
+
+        <!-- ===== TABLA DE CATEGORÍAS ===== -->
+        <div id="tabCategorias" class="tab-content">
+            <div class="toolbar">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchCategorias" placeholder="Buscar categoría...">
+                </div>
+                <button id="agregarCategoriaBtn" class="btn-primary" style="padding: 10px 20px;">
+                    <i class="fas fa-plus"></i> Nueva categoría
+                </button>
+            </div>
+            
+            <div class="stats-badge">
+                <i class="fas fa-tags"></i> <span id="categoriasCount">0</span> categorías
+            </div>
+            
+            <div id="categoriasList" class="categorias-grid"></div>
+        </div>
+
+        <!-- ===== TABLA PARA AGREGAR ===== -->
+        <div id="tabNueva" class="tab-content">
+            <!-- Agregar respuesta -->
+            <div class="form-card">
+                <h3><i class="fas fa-plus-circle"></i> Agregar nueva respuesta</h3>
+                
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" id="newTitulo" placeholder="Ej: Licencia Office 365">
+                </div>
+                
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select id="newCategoria">
+                        <option value="">Seleccionar...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Contenido</label>
+                    <textarea id="newContenido" rows="8" placeholder="Escribe la respuesta..."></textarea>
+                </div>
+                
+                <button id="guardarRespuestaBtn" class="btn-primary">
+                    <i class="fas fa-save"></i> Guardar respuesta
+                </button>
+            </div>
+
+            <!-- Agregar manual con subida directa -->
+            <div class="form-card">
+                <h3><i class="fas fa-upload"></i> Subir manual</h3>
+                
+                <div class="form-group">
+                    <label>Nombre del manual</label>
+                    <input type="text" id="newManualNombre" placeholder="Ej: Guía de Office 365">
+                </div>
+                
+                <div class="form-group">
+                    <label>Descripción (opcional)</label>
+                    <input type="text" id="newManualDesc" placeholder="Breve descripción del contenido">
+                </div>
+                
+                <div class="form-group">
+                    <label>Seleccionar archivo</label>
+                    <input type="file" id="newManualFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
+                    <small>📄 Formatos permitidos: PDF, Word, Excel, PowerPoint</small>
+                </div>
+                
+                <button id="guardarManualBtn" class="btn-primary">
+                    <i class="fas fa-upload"></i> Subir manual
+                </button>
+                <div id="uploadProgress" class="upload-progress" style="display:none;">
+                    <div class="progress-bar"></div>
+                    <span>Subiendo...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver respuesta -->
+    <div id="respuestaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitulo"></h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body" id="modalContenido"></div>
+            <div class="modal-footer">
+                <button id="copiarRespuestaBtn" class="btn-copy">
+                    <i class="fas fa-copy"></i> Copiar respuesta
+                </button>
+                <button id="editarRespuestaModalBtn" class="btn-edit">
+                    <i class="fas fa-edit"></i> Editar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar respuesta -->
+    <div id="editarModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3>✏️ Editar respuesta</h3>
+                <span class="close-editar-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="editTitulo" class="edit-input" placeholder="Título">
+                <select id="editCategoria" class="edit-select">
+                    <option value="">Sin categoría</option>
+                </select>
+                <textarea id="editContenido" rows="10" class="edit-textarea"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button id="guardarEdicionBtn" class="btn-primary">Guardar</button>
+                <button id="cancelarEdicionBtn" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para vista previa de archivo -->
+    <div id="fileModal" class="modal">
+        <div class="modal-content modal-pdf">
+            <div class="modal-header">
+                <h3 id="fileModalTitulo">Vista previa</h3>
+                <span class="close-file-modal">&times;</span>
+            </div>
+            <div class="modal-body-pdf">
+                <iframe id="fileIframe" src="" width="100%" height="500px" style="border: none;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar/editar categoría -->
+    <div id="categoriaModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3 id="categoriaModalTitulo">Nueva categoría</h3>
+                <span class="close-categoria-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nombre de la categoría</label>
+                    <input type="text" id="categoriaNombre" placeholder="Ej: Soporte Técnico">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="guardarCategoriaBtn" class="btn-primary">Guardar</button>
+                <button id="cancelarCategoriaBtn" class="btn-secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
